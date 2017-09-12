@@ -15,10 +15,11 @@ var dist="dist";
 gulp.task('js', function(){
   return gulp.src('src/EasyChart/*.js')
       //  .pipe($.sourcemaps.init())
+        .pipe($.concat('./js/EasyChart.js'))
         .pipe($.babel({
             presets: ['env']
         }))
-        .pipe($.concat('./js/EasyChart.js'))
+
     //    .pipe($.sourcemaps.write('.'))
         .pipe(gulp.dest(dist))
         .pipe($.uglify())
@@ -37,11 +38,17 @@ gulp.task('css', function(){
         .pipe(gulp.dest(dist));
 
 });
+gulp.task('echarts', function(){
+  return gulp.src('src/echarts/*.js')
+        .pipe(gulp.dest(dist+"/js"));
+
+
+});
 gulp.task('image', function(){
 
 });
 gulp.task('build', function(cb){
-  runSequence('clean',['js','css','image'],cb);
+  runSequence('clean',['js','css','image','echarts'],cb);
 });
 gulp.task('default', ['build'],function(){
   // 将你的默认的任务代码放在这
