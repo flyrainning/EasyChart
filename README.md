@@ -7,6 +7,7 @@ Easy way to use echarts with php
 Built on top of
 
 [ECharts](https://github.com/ecomfe/echarts)
+
 [jQuery](http://jquery.com/)
 
 
@@ -14,17 +15,24 @@ Built on top of
 
 load it by script tag
 
+we need jquery
+
 ```
 <script src="jquery.min.js"></script>
+```
 
-<script src="config.js"></script>
+we need echarts , echarts-gl for 3D
 
+```
 <script src="lib/echarts.min.js"></script>
 <script src="lib/echarts-gl.min.js"></script>
+```
 
+EasyChart
+
+```
+<script src="config.js"></script>
 <script src="lib/EasyChart.js"></script>
-
-
 ```
 
 
@@ -35,3 +43,11 @@ load it by script tag
 
 
 ```
+
+## Document
+
+[EasyChart Doc](doc/README.md)
+
+## License
+
+EasyChart is available under the BSD license.
