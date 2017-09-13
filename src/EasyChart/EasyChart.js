@@ -4,15 +4,21 @@
 class EasyChart{
   constructor(_opt){
     this.opt={
-      id:EC_ID("EasyChart"),//id
       echarts_style:'macarons',
       loading_text:'加载中 ...',
+      uri:"/EasyChart/api",
+      send:{},
+
+
+      use_websocket:false
 
     };
-    this.setOpt(_opt);
+
 
     this.echarts=false;
     this.is_debug=false;
+
+    this.init(_opt);
   }
   debug(isdebug){
     this.is_debug=(isdebug)?true:false;
@@ -23,51 +29,72 @@ class EasyChart{
   }
   init(_opt){
     this.setOpt(_opt);
-    this.echarts=echarts.init(document.getElementById(this.id),this.opt.echarts_style);
-  	this.echarts.showLoading({
-  		text : this.opt.loading_text,
-  	});
+    if (this.echarts) return;
+    if (this.opt.id){
+      this.echarts=echarts.init(document.getElementById(this.opt.id),this.opt.echarts_style);
+    	this.echarts.showLoading({
+    		text : this.opt.loading_text,
+    	});
+      if (typeof(this.opt.onload)=="function") this.opt.onload(this);
+    }else{
+      if (this.is_debug) console.log("No id found for EasyChart");
+    }
+
+  }
+  send(data,callback){
+    if (this.opt.use_websocket){
+
+    }else{
+      this.ajax(this.opt.api,data,callback);
+    }
   }
   ajax(api,datas,callback){
+    var that=this;
   	jQuery.ajax({
   		type: "POST",
   		timeout : 600000,
-  		url: "/index.php?api="+api,
+  		url: this.opt.uri+"/index.php?api="+api,
   		data: datas,
   		success: callback,
   		error:function(XMLHttpRequest, textStatus, errorThrown){
-  			this.msg('与服务器链接失败，请重试<br /><br />'+textStatus+'  <br />  '+errorThrown,true);
+  			that.msg('与服务器链接失败，请重试 : '+textStatus+'  '+errorThrown,true);
   		}
 
   	});
   }
   msg(msg){
-    this.echarts.showLoading({
-  		text : msg,
-  	});
+    if (msg){
+      this.echarts.showLoading({text : msg});
+    }else{
+      this.echarts.hideLoading();
+    }
   }
-  load(data,_opt){
-    if (!this.echarts) this.init(_opt);
+  load(data,_opt){//加载数据
+
+    if (this.echarts){
+      if (_opt) this.init(_opt);
+    }else{
+      this.init(_opt);
+    }
   	var that=this;
-    
-  	var postdata=data;
+
+  	var postdata=data || this.opt.send || "";
   	if (typeof(postdata)!="object"){
   		postdata={data:postdata};
   	}
-  	this.ajax(that.api,postdata,function(msg){
+    this.send(postdata,function(msg){
+      if (msg.result){
 
-  		if (msg.result){
-
-  			var config={};
-  			if (msg.data.config){
-  				config=eval("("+msg.data.config+")");
-  			}
-  			var data={};
-  			if (msg.data.data){
-  				data=msg.data.data;
-  			}
-
-  			var opt=jQuery.extend(true,{},config,data);
+  			// var config={};
+  			// if (msg.data.config){
+  			// 	config=eval("("+msg.data.config+")");
+  			// }
+  			// var data={};
+  			// if (msg.data.data){
+  			// 	data=msg.data.data;
+  			// }
+        //
+  			// var opt=jQuery.extend(true,{},config,data);
 
   			if (that.is_debug){
   				console.log("config:",config);
@@ -75,12 +102,13 @@ class EasyChart{
   				console.log("option:",opt);
   			}
 
-  			that.charts.setOption(opt);
+  			that.echarts.setOption(opt);
   		}else{
-  			malert(msg.data);
+  			that.msg(msg.data);
   		}
-  		that.charts.hideLoading();
-  	});
+  		that.echarts.hideLoading();
+    });
+
   }
 
 };
