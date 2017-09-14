@@ -42,9 +42,9 @@ jQuery(function($){
       }
 		}
 
-    var send=$(this).data("send");
-    if (send){
-      opt.send=(typeof(send)=="object")?send:JSON.parse(send);
+    var post=$(this).data("post");
+    if (post){
+      opt.post=(typeof(post)=="object")?post:JSON.parse(post);
     }
 
     var item=window.EC.add(opt);

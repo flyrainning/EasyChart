@@ -7,7 +7,9 @@ class EasyChart{
       echarts_style:'macarons',
       loading_text:'加载中 ...',
       uri:"/EasyChart/api",
-      send:{},
+      post:false,
+      width:"",
+      height:"",
 
 
       use_websocket:false
@@ -17,6 +19,7 @@ class EasyChart{
 
     this.echarts=false;
     this.is_debug=false;
+    this.EL=false;
 
     this.init(_opt);
   }
@@ -31,6 +34,9 @@ class EasyChart{
     this.setOpt(_opt);
     if (this.echarts) return;
     if (this.opt.id){
+      this.EL=jQuery("#"+this.opt.id);
+      if (this.opt.width) this.EL.css({width:this.opt.width});
+      if (this.opt.height) this.EL.css({height:this.opt.height});
       this.echarts=echarts.init(document.getElementById(this.opt.id),this.opt.echarts_style);
     	this.echarts.showLoading({
     		text : this.opt.loading_text,
@@ -78,7 +84,7 @@ class EasyChart{
     }
   	var that=this;
 
-  	var postdata=data || this.opt.send || "";
+  	var postdata=data || this.opt.post || "";
   	if (typeof(postdata)!="object"){
   		postdata={data:postdata};
   	}

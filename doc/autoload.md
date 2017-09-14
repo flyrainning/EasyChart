@@ -15,7 +15,7 @@ EasyChart提供自动加载功能，根据HTML标签的附加属性生成EasyCha
 | data-api    | 可选 指定api                                  |
 | data-onload | 可选 指定对象创建后的回调函数，必须为全局函数 |
 | data-delay  | 可选 设置延时加载时间                         |
-| data-send   | 可选 设置默认向服务器发送的请求 json格式      |
+| data-post   | 可选 设置默认向服务器发送的请求 json格式      |
 
 > data-opt中的属性与其他标签属性相冲突以标签属性为准
 > 不设置delay的情况下，多个实例会以300ms为间隔依次向服务器请求数据
@@ -26,6 +26,6 @@ EasyChart提供自动加载功能，根据HTML标签的附加属性生成EasyCha
 HTML
 
 ```
-<div EasyChart data-delay="1000" data-onload="init" data-api="area.getall" data-opt='{"echarts_style":"macarons","loading_text":"loading ..."}' data-send='{"date":"","title":"这是一个图表"}' style="height:360px"></div>
+<div EasyChart data-delay="1000" data-onload="init" data-api="area.getall" data-opt='{"echarts_style":"macarons","loading_text":"loading ...","height":"100px"}' data-post='{"date":"some_msg","title":"这是一个图表"}'></div>
 
 ```

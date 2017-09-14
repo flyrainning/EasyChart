@@ -19,9 +19,9 @@ class EC_Group{
   }
   getByID(id){
     var item;
-    this.item.forEach(function(o,i){
-      if (o.opt.id==id){
-        item=o;
+    this.item.forEach(function(obj,i){
+      if (obj.opt.id==id){
+        item=obj;
       }
     });
     return item;
