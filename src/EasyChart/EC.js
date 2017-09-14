@@ -1,36 +1,37 @@
 "use strict";
 
-if (!window.EC){
-  var EC={
-    count:0,
-    item:[],
-    addItem:function(_item){
-      this.item.push(_item);
-      this.count=this.item.length;
-    },
-    add:function(opt){
-      var item=new EasyChart(opt);
-      this.addItem(item);
-      return item;
-    },
-    get:function(id){
-      return this.getByID(id);
-    },
-    getByID:function(id){
-      var item=undefined;
-      this.item.forEach(function(o,i){
-        if (o.opt.id==id){
-          item=o;
-          break;
-        }
-      });
-      return item;
-    },
-    getByIndex:function(index){
-      return this.item[index];
-    }
+class EC_Group{
+  constructor(){
+    this.count=0;
+    this.item=[];
+  }
+  addItem(_item){
+    this.item.push(_item);
+    this.count=this.item.length;
+  }
+  add(opt){
+    var item=new EasyChart(opt);
+    this.addItem(item);
+    return item;
+  }
+  get(id){
+    return this.getByID(id);
+  }
+  getByID(id){
+    var item;
+    this.item.forEach(function(o,i){
+      if (o.opt.id==id){
+        item=o;
+      }
+    });
+    return item;
+  }
+  getByIndex(index){
+    return this.item[index];
+  }
 
+}
 
-  };
-  if (window) window.EC=EC;
+if ((window)&&(!window.EC)){
+  window.EC=new EC_Group();
 }
