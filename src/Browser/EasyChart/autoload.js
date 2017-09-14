@@ -21,7 +21,6 @@ jQuery(function($){
     var debug=$(this).data("debug");
     if (debug){
       opt.debug=true;
-			item.debug(true);
 		}
 
     var init_function_name=$(this).data("onload");

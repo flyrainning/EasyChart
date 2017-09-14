@@ -12,6 +12,7 @@ class EasyChart{
       post:false,
       width:"",
       height:"",
+      debug:false,
 
       use_websocket:false
 
@@ -19,13 +20,13 @@ class EasyChart{
 
 
     this.echarts=false;
-    this.is_debug=false;
+
     this.DOM=false;
 
     this.init(_opt);
   }
   debug(isdebug){
-    this.is_debug=(isdebug)?true:false;
+    this.opt.debug=(isdebug)?true:false;
   }
   setOpt(_opt){
     _opt=_opt || {};
@@ -44,7 +45,7 @@ class EasyChart{
     	});
       if (typeof(this.opt.onload)=="function") this.opt.onload(this);
     }else{
-      if (this.is_debug) console.log("No id found for EasyChart");
+      if (this.opt.debug) console.log("No id found for EasyChart");
     }
 
   }
@@ -97,22 +98,19 @@ class EasyChart{
       if (typeof(msg)=="string") msg=JSON.parse(msg);
       if (msg.result){
 
-  			// var config={};
-  			// if (msg.data.config){
-  			// 	config=eval("("+msg.data.config+")");
-  			// }
-  			// var data={};
-  			// if (msg.data.data){
-  			// 	data=msg.data.data;
-  			// }
-        //
-  			// var opt=jQuery.extend(true,{},config,data);
-
-  			if (that.is_debug){
-  				console.log("config:",config);
-  				console.log("data:",data);
-  				console.log("option:",opt);
+  			var opt={};
+  			if (msg.data){
+  				//config=eval("("+msg.data+")");
+          opt=(new Function("EasyChart",msg.data))(this);
   			}
+
+  			if (that.opt.debug){
+  				console.log("option:",opt);
+          window.debug_opt=opt;
+          window.e=that.echarts;
+  			}
+
+
 
   			that.echarts.setOption(opt);
         that.echarts.hideLoading();

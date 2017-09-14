@@ -4,20 +4,13 @@
  */
 class EasyChart
 {
-  protected $config = array();
   protected $type="";
-  protected $data_maker=false;
-  protected $addon_conf="";
+  public $data=false;
+  public $option=false;
 
-  public $switch=array(
-    'title'=>true,
 
-  );
-
-  function __construct($type="bar",$conf="")
-  {
+  function __construct($type="bar"){
     $this->set_type($type);
-    $this->set_config($conf);
   }
   function title($title='',$subtitle='',$x="left"){
     $this->addon_conf.=<<<CODE
@@ -67,29 +60,30 @@ CODE;
 CODE;
   }
   function set_type($type=''){
-    $this->type=$type;
-    $classname="chart_dataMaker";
+    $this->type=ucfirst($type);
     if (!empty($type)){
-      $classname.='_'.$type;
-    }
-    $this->data_maker=new $classname;
-  }
-  function set_config($conf=''){
+      $classname='Chart_'.$this->type;
+      $this->option=new ECOption();
+      $this->data=new $classname($this->option);
 
-    $this->config=$this->data_maker->get_config($conf);
+    }else{
+
+    }
+
   }
-  function data(){
+
+  function add(){
     $args = func_get_args();
-    $this->data_maker->add($args);
+    $this->data->add($args);
   }
   function add_data($data){
-    $this->data_maker->add_data($data);
+    $this->data->add_data($data);
   }
   function clean($d){
-    $this->data_maker->clean();
+    $this->data->clean();
   }
   function right2left(){
-    $this->data_maker->right2left();
+    $this->data->right2left();
   }
   static function error($msg){
     self::apiout(array(
@@ -100,9 +94,11 @@ CODE;
 
   }
   static function apiout($data){
+
     header('Cache-Control: no-cache, must-revalidate');
 		header("Pragma: no-cache");
     header('Content-type: application/json');
+
     echo json_encode($data);
     die();
   }
@@ -122,24 +118,16 @@ CODE;
 
 	}
   function out(){
-    //合并config
-    $configs='{';
-    $configs.=$this->config;
-    $configs.=$this->addon_conf;
-    $configs.='}';
-
-    //输出
-    //print_r($this->data_maker->out());
-
+    $this->data->build();
     self::apiout(
       array(
-      	'config'=>$configs,
-      	'data'=>$this->data_maker->out(),
+      	'result'=>true,
+        'type'=>"option",
+      	'data'=>$this->option->parseJSFunction(),
       )
     );
 
   }
-
 
 }
 

@@ -2,6 +2,7 @@
 
 class ECData
 {
+  public $option=false;
   protected $data=array();
   protected $d1=array();
   protected $d2=array();
@@ -10,9 +11,13 @@ class ECData
   protected $d5=array();
   protected $config='';
 
-  function __construct()
-  {
-    $this->config='';
+  function __construct(&$option){
+    $this->bind($option);
+    $this->init();
+  }
+  function init(){}
+  function bind(&$option){
+    $this->option=$option;
   }
   function get_config($conf){
     return $this->config . "\n" . $conf;
@@ -61,9 +66,9 @@ class ECData
     $this->d4=array_reverse($this->d4);
     $this->d5=array_reverse($this->d5);
   }
-  function out(){
+  function build(){
     $this->make_data();
-    return $this->data;
+
   }
 }
 
