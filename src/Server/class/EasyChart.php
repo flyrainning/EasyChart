@@ -13,51 +13,50 @@ class EasyChart
     $this->set_type($type);
   }
   function title($title='',$subtitle='',$x="left"){
-    $this->addon_conf.=<<<CODE
-    title : {
+    $this->option->set("title","
+    {
             text: '$title',
             subtext: '$subtitle',
             x: '$x',
             align: 'left'
-        },
-CODE;
+        }
+     ");
+
   }
   function zoom($enable=true){
     $en=($enable)?"true":"false";
-    $this->addon_conf.=<<<CODE
-    dataZoom: {
+    $this->option->set("dataZoom","
+    {
         show: $en,
         start : 0
-    },
-
-CODE;
+    }
+     ");
   }
-  function fullsize($left="1%",$right="1%",$top="60",$bottom="60"){
-    $this->addon_conf.=<<<CODE
-    grid: {
+  function fullsize($left="60",$right="60",$top="60",$bottom="60"){
+    $this->option->set("grid","
+    {
         left: '$left',
         right: '$right',
         top: '$top',
         bottom: '$bottom',
         containLabel: true
-    },
-CODE;
-
+    }
+     ");
   }
   function toolbox($conf=""){
-    $this->addon_conf.=<<<CODE
-  toolbox: {
-        show : true,
-        feature : {
-            mark : {show: true},
-            dataView : {show: true, readOnly: false},
-          //  magicType : {show: true, type: ['line', 'bar']},
-            restore : {show: true},
-            saveAsImage : {show: true},
-            $conf
-        }
-    },
-CODE;
+    $this->option->set("toolbox","
+    {
+          show : true,
+          feature : {
+              mark : {show: true},
+              dataView : {show: true, readOnly: false},
+            //  magicType : {show: true, type: ['line', 'bar']},
+              restore : {show: true},
+              saveAsImage : {show: true},
+              $conf
+          }
+      }
+     ");
   }
   function set_type($type=''){
     $this->type=ucfirst($type);
@@ -102,6 +101,9 @@ CODE;
     echo json_encode($data);
     die();
   }
+  static function strout($data){
+    return json_encode($data);
+  }
   static function getAPI($msg){
     return self::getVar("__api","");
   }
@@ -117,15 +119,18 @@ CODE;
 		}
 
 	}
-  function out(){
+  function out($send=true){
     $this->data->build();
-    self::apiout(
-      array(
-      	'result'=>true,
-        'type'=>"option",
-      	'data'=>$this->option->parseJSFunction(),
-      )
+    $out=array(
+      'result'=>true,
+      'type'=>"option",
+      'data'=>$this->option->parseJSFunction(),
     );
+    if ($send){
+      self::apiout($out);
+    }else{
+      return self::strout($out);
+    }
 
   }
 
