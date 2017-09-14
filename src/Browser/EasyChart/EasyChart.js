@@ -3,23 +3,24 @@
 
 class EasyChart{
   constructor(_opt){
-    this.opt={
+    var user_opt={};
+    if (typeof(EasyChart_config)=="object") user_opt=EasyChart_config;
+    this.opt=Object.assign({
       echarts_style:'macarons',
       loading_text:'加载中 ...',
-      uri:"/EasyChart/api",
+      uri:"/api/",
       post:false,
       width:"",
       height:"",
 
-
       use_websocket:false
 
-    };
+    },user_opt);
 
 
     this.echarts=false;
     this.is_debug=false;
-    this.EL=false;
+    this.DOM=false;
 
     this.init(_opt);
   }
@@ -34,9 +35,9 @@ class EasyChart{
     this.setOpt(_opt);
     if (this.echarts) return;
     if (this.opt.id){
-      this.EL=jQuery("#"+this.opt.id);
-      if (this.opt.width) this.EL.css({width:this.opt.width});
-      if (this.opt.height) this.EL.css({height:this.opt.height});
+      this.DOM=jQuery("#"+this.opt.id);
+      if (this.opt.width) this.DOM.css({width:this.opt.width});
+      if (this.opt.height) this.DOM.css({height:this.opt.height});
       this.echarts=echarts.init(document.getElementById(this.opt.id),this.opt.echarts_style);
     	this.echarts.showLoading({
     		text : this.opt.loading_text,
@@ -54,13 +55,18 @@ class EasyChart{
       this.ajax(this.opt.api,data,callback);
     }
   }
-  ajax(api,datas,callback){
+  ajax(api,PostData,callback){
     var that=this;
+    if (typeof(PostData)!="object"){
+  		PostData={data:PostData};
+  	}
+    PostData.__api=api;
+
   	jQuery.ajax({
   		type: "POST",
   		timeout : 600000,
-  		url: this.opt.uri+"/index.php?api="+api,
-  		data: datas,
+  		url: this.opt.uri,
+  		data: PostData,
   		success: callback,
   		error:function(XMLHttpRequest, textStatus, errorThrown){
   			that.msg('与服务器链接失败，请重试 : '+textStatus+'  '+errorThrown,true);
@@ -69,6 +75,7 @@ class EasyChart{
   	});
   }
   msg(msg){
+
     if (msg){
       this.echarts.showLoading({text : msg});
     }else{
@@ -85,10 +92,9 @@ class EasyChart{
   	var that=this;
 
   	var postdata=data || this.opt.post || "";
-  	if (typeof(postdata)!="object"){
-  		postdata={data:postdata};
-  	}
+
     this.send(postdata,function(msg){
+      if (typeof(msg)=="string") msg=JSON.parse(msg);
       if (msg.result){
 
   			// var config={};
@@ -109,10 +115,14 @@ class EasyChart{
   			}
 
   			that.echarts.setOption(opt);
+        that.echarts.hideLoading();
   		}else{
-  			that.msg(msg.data);
+        var a=msg.msg || msg.data;
+        console.log(msg);
+        var msgs=msg.msg||msg.data||msg.message||"";
+  			that.msg(msgs);
   		}
-  		that.echarts.hideLoading();
+
     });
 
   }

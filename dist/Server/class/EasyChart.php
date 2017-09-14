@@ -92,24 +92,18 @@ CODE;
     $this->data_maker->right2left();
   }
   static function error($msg){
-    self::apiout(array(
+    echo json_encode(array(
       "result"=>false,
       "type"=>"error",
       "data"=>$msg
     ));
-
-  }
-  static function apiout($data){
-    header('Cache-Control: no-cache, must-revalidate');
-		header("Pragma: no-cache");
-    header('Content-type: application/json');
-    echo json_encode($data);
     die();
   }
   static function getAPI($msg){
     return self::getVar("__api","");
   }
   static function getVar($name,$default=""){
+    print_r($_REQUEST[$name]);
     return (isset($_REQUEST[$name]))?$_REQUEST[$name]:$default;
   }
   static function getP($parmstr){
@@ -130,12 +124,9 @@ CODE;
 
     //输出
     //print_r($this->data_maker->out());
-
-    self::apiout(
-      array(
-      	'config'=>$configs,
-      	'data'=>$this->data_maker->out(),
-      )
+    return array(
+    	'config'=>$configs,
+    	'data'=>$this->data_maker->out(),
     );
 
   }

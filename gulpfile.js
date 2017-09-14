@@ -13,42 +13,48 @@ var dist="dist";
 
 
 gulp.task('js', function(){
-  return gulp.src('src/EasyChart/*.js')
+  return gulp.src('src/Browser/EasyChart/*.js')
       //  .pipe($.sourcemaps.init())
-        .pipe($.concat('./js/EasyChart.js'))
+        .pipe($.concat('./Browser/js/EasyChart.js'))
         .pipe($.babel({
             presets: ['env']
         }))
 
     //    .pipe($.sourcemaps.write('.'))
-        .pipe(gulp.dest(dist))
+    //    .pipe(gulp.dest(dist))
         .pipe($.uglify())
-        .pipe($.rename('./js/EasyChart.min.js'))
+        .pipe($.rename('./Browser/js/EasyChart.min.js'))
         .pipe(gulp.dest(dist));
 
 
 });
 gulp.task('css', function(){
   return gulp.src([
-    'src/css/*.css',
-    'src/css/*.scss'
+    'src/Browser/css/*.css',
+    'src/Browser/css/*.scss'
   ])
-        .pipe($.concat('./css/EasyChart.css'))
+        .pipe($.concat('./Browser/css/EasyChart.css'))
         .pipe($.sass())
         .pipe(gulp.dest(dist));
 
 });
 gulp.task('echarts', function(){
-  return gulp.src('src/echarts/*.js')
-        .pipe(gulp.dest(dist+"/js"));
+  return gulp.src('src/Browser/echarts/*.js')
+        .pipe(gulp.dest(dist+"/Browser/js/"));
 
 
+});
+gulp.task('server', function(){
+  return gulp.src([
+    'src/Server/**'
+  ])
+        .pipe(gulp.dest(dist+"/Server/"));
 });
 gulp.task('image', function(){
 
 });
 gulp.task('build', function(cb){
-  runSequence('clean',['js','css','image','echarts'],cb);
+  runSequence('clean',['js','css','image','echarts','server'],cb);
 });
 gulp.task('default', ['build'],function(){
   // 将你的默认的任务代码放在这

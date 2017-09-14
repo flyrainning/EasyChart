@@ -1,12 +1,11 @@
 <?php
-require '../src/PHP_Server/loader.php';
+
+require '../src/Server/loader.php';
+
 
 
 //取得需要的变量
-$_hash="";
-if (isset($_REQUEST["api"])){//取得API
-  $_hash=$_REQUEST["api"];
-}
+$_hash=EasyChart::getAPI();
 
 empty($_hash) and EasyChart::error('没有指定API');
 
@@ -17,9 +16,7 @@ $_file=uhash($_hash).'.php';
 
 
 if (file_exists($_file)) {
-
 	require $_file;
-
 }else{
 	EasyChart::error('找不到API');
 }
