@@ -4,13 +4,21 @@
  */
 class EasyChart
 {
-  protected $type="";
+  protected $type;
   public $data=false;
   public $option=false;
+  public $config;
 
 
   function __construct($type="bar"){
+    global $EC_config;
     $this->set_type($type);
+    $this->config=(empty($EC_config))?array():$EC_config;
+    if (!empty($this->config['default'])){
+      foreach ($this->config['default'] as $key => $value) {
+        $this->option->set($key,$value);
+      }
+    }
   }
   function title($title='',$subtitle='',$x="left"){
     $this->option->set("title","
@@ -21,7 +29,6 @@ class EasyChart
             align: 'left'
         }
      ");
-
   }
   function zoom($enable=true){
     $en=($enable)?"true":"false";
