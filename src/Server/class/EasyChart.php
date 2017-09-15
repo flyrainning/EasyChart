@@ -138,8 +138,10 @@ class EasyChart
   static function strout($data){
     return json_encode($data);
   }
-  static function getAPI(){
-    return self::getVar("EC_api","");
+  static function getAPI($key="api"){
+    $api=self::getVar("EC_api","");
+    if (empty($api)) $api=self::getVar($key,"");
+    return $api;
   }
   static function server($dir="",$stop=false){
     $_hash=self::getAPI();
@@ -156,7 +158,7 @@ class EasyChart
     $_file=rtrim($dir,'/').$_file;
 
     if (file_exists($_file)) {
-    	require $_file;
+    	require($_file);
     }else{
     	EasyChart::error('找不到API'.$_file);
     }
@@ -171,7 +173,6 @@ class EasyChart
 			global ${$k};
 			${$k}=self::getVar($k);
 		}
-
 	}
   function out($to_str=false){
     $this->data->build();
