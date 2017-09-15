@@ -7,7 +7,7 @@ class EasyChart{
     if (typeof(EasyChart_config)=="object") user_opt=EasyChart_config;
     this.opt=Object.assign({
       echarts_style:'macarons',
-      loading_text:'加载中 ...',
+      loading_text:'loading ...',
       uri:"/api/",
       post:false,
       width:"",
