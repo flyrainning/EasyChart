@@ -1,8 +1,10 @@
 <?php return array(
+  'type'=>"bar",
+  'debug'=>true,
   'default'=>array(
-    'zoom'=>array(
+    'dataZoom'=>array(
       'show'=>true,
-      'start'=>'0'
+      'start'=>0
     ),
     'toolbox'=>array(
       'show'=>true,
@@ -23,7 +25,14 @@
 
       )
     ),
-  )
+    'grid'=>array(
+      'left'=>'60',
+      'right'=>'40',
+      'left'=>'40',
+      'bottom'=>'60',
+      'containLabel'=>true,
+    ),
+  ),
 
 );
 ?>

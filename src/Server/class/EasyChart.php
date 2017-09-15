@@ -2,6 +2,14 @@
 /**
  *
  */
+ // function customError($errno, $errstr, $errfile, $errline){
+ //  echo "<b>Custom error:</b> [$errno] $errstr<br />";
+ //  echo " Error on line $errline in $errfile<br />";
+ //  echo "Ending Script";
+ //  die();
+ // }
+ // set_error_handler("customError");
+
 class EasyChart
 {
   protected $typename;
@@ -14,12 +22,12 @@ class EasyChart
     global $EC_config;
 
     $this->config=(empty($EC_config))?array():$EC_config;
-    if (!empty($this->config['default'])){
-      foreach ($this->config['default'] as $key => $value) {
-        $this->option->set($key,$value);
+
+    if (!empty($this->config['debug'])){
+      if ($this->config['debug']){
+        set_error_handler("EasyChart::customError");
       }
     }
-
     if (empty($type)){
       if (empty($this->config['type'])){
         $type="none";
@@ -28,6 +36,13 @@ class EasyChart
       }
     }
     $this->type($type);
+
+    if (!empty($this->config['default'])){
+      foreach ($this->config['default'] as $key => $value) {
+        $this->option->set($key,$value);
+      }
+    }
+
   }
   function title($title='',$subtitle='',$x="left"){
     $this->option->set("title","
@@ -80,9 +95,6 @@ class EasyChart
       $classname='Chart_'.$this->typename;
       $this->option=new ECOption();
       $this->data=new $classname($this->option);
-
-    }else{
-
     }
 
   }
@@ -108,6 +120,12 @@ class EasyChart
     ));
 
   }
+  static function customError($errno, $errstr, $errfile, $errline){
+   echo "<b>Custom error:</b> [$errno] $errstr<br />";
+   echo " Error on line $errline in $errfile<br />";
+   echo "Ending Script";
+   die();
+  }
   static function apiout($data){
 
     header('Cache-Control: no-cache, must-revalidate');
@@ -120,7 +138,7 @@ class EasyChart
   static function strout($data){
     return json_encode($data);
   }
-  static function getAPI($msg){
+  static function getAPI(){
     return self::getVar("__api","");
   }
   static function getVar($name,$default=""){
@@ -135,17 +153,18 @@ class EasyChart
 		}
 
 	}
-  function out($send=true){
+  function out($to_str=false){
     $this->data->build();
     $out=array(
       'result'=>true,
       'type'=>"option",
       'data'=>$this->option->parseJSFunction(),
     );
-    if ($send){
-      self::apiout($out);
-    }else{
+
+    if ($to_str){
       return self::strout($out);
+    }else{
+      self::apiout($out);
     }
 
   }

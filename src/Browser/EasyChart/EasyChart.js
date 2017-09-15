@@ -83,6 +83,9 @@ class EasyChart{
       this.echarts.hideLoading();
     }
   }
+  resize(){
+    this.echarts.resize();
+  }
   load(data,_opt){//加载数据
 
     if (this.echarts){
@@ -107,7 +110,7 @@ class EasyChart{
   			if (that.opt.debug){
   				console.log("option:",opt);
           window.debug_opt=opt;
-          window.e=that.echarts;
+          window.myChart=that.echarts;
   			}
 
 

@@ -18,7 +18,6 @@ class Chart_Bar extends ECData
     ");
 
     $this->option->set("xAxis","
-    [
        {
            type : 'category',
            data : [],
@@ -26,16 +25,13 @@ class Chart_Bar extends ECData
                alignWithLabel: true
            }
        }
-     ]
      ");
 
 
      $this->option->set("yAxis","
-     [
           {
               type : 'value'
           }
-     ]
       ");
 
     $this->option->set("series","

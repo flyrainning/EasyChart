@@ -30,6 +30,7 @@ class ECData
     $this->data=array_merge($this->data,$data);
   }
   function add($d){
+
     if (isset($d[1])){
       $this->d1[]=$d[0];
       $this->d2[]=array(
@@ -39,13 +40,12 @@ class ECData
 
     }
 
+
   }
   function make_data(){
     $this->data=array(
       'xAxis'=>array(
-        array(
           "data"=>$this->d1,
-        )
       ),
       'series'=>array(
         array(
@@ -66,6 +66,7 @@ class ECData
   }
   function build(){
     $this->make_data();
+
     if (!empty($this->data)){
       foreach ($this->data as $key => $value) {
         $this->option->set($key,$value);

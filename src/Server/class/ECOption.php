@@ -22,8 +22,20 @@ class ECOption
   function add_option(name,obj){
   if (name){
     if (typeof(obj)=="string") obj=JSON.parse(obj);
-    if (option[name] && (name!="series")){
-      option[name]=jQuery.extend(true,{},option[name],obj);
+    if (option[name]){
+      if (name=="series"){
+        if ((option[name].length)&&(obj.length)){
+          for(var i=0;i<obj.length;i++){
+            if (option[name][i]){
+              option[name][i]=jQuery.extend(true,{},option[name][i],obj[i]);
+            }else{
+              option[name][i]=obj[i];
+            }
+          }
+        }
+      }else{
+        option[name]=jQuery.extend(true,{},option[name],obj);
+      }
     }else{
       option[name]=obj;
     }

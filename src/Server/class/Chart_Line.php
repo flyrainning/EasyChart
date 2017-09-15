@@ -14,7 +14,6 @@ class Chart_Line extends ECData
     }
     ");
     $this->option->set("xAxis","
-    [
         {
             type : 'category',
             data : [],
@@ -22,14 +21,11 @@ class Chart_Line extends ECData
                 alignWithLabel: true
             }
         }
-    ]
     ");
     $this->option->set("yAxis","
-    [
         {
             type : 'value'
         }
-    ]
     ");
     $this->option->set("series","
     [
@@ -63,7 +59,7 @@ class Chart_Line extends ECData
         }
     ]
     ");
-  
+
   }
 
 }

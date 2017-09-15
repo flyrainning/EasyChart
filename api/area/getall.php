@@ -3,16 +3,6 @@ if (!defined('EasyChart')){
 	die('Access denied');
 }
 
-function customError($errno, $errstr, $errfile, $errline)
- {
- echo "<b>Custom error:</b> [$errno] $errstr<br />";
- echo " Error on line $errline in $errfile<br />";
- echo "Ending Script";
- die();
- }
-
-//set error handler
-set_error_handler("customError");
 
 
 $c=new EasyChart("bar");
@@ -20,8 +10,11 @@ $c=new EasyChart("bar");
 $c->option->set("title"," {
                 subtext: 'ECharts'
             }");
-
+$c->title("sss");
+$c->add("ff",345);
 //$c->zoom();
+$c->add("aa",3415);
+$c->add("bb",3245);
 
 //$c->fullsize();
 //$c->toolbox();
