@@ -4,17 +4,17 @@
  */
 class Chart_Line extends ECData
 {
-  function __construct()
-  {
-    $this->config=<<<CODE
-    tooltip : {
+  function init(){
+    $this->option->set("tooltip","
+    {
         trigger: 'axis',
         axisPointer : {
             type : 'shadow'
         }
-    },
-
-    xAxis : [
+    }
+    ");
+    $this->option->set("xAxis","
+    [
         {
             type : 'category',
             data : [],
@@ -22,13 +22,17 @@ class Chart_Line extends ECData
                 alignWithLabel: true
             }
         }
-    ],
-    yAxis : [
+    ]
+    ");
+    $this->option->set("yAxis","
+    [
         {
             type : 'value'
         }
-    ],
-    series : [
+    ]
+    ");
+    $this->option->set("series","
+    [
         {
             name:'值',
             type:'line',
@@ -57,9 +61,9 @@ class Chart_Line extends ECData
             },
             data:[]
         }
-    ],
-
-CODE;
+    ]
+    ");
+  
   }
 
 }

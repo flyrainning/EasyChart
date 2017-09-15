@@ -2,33 +2,36 @@
 
 class Chart_Pie extends ECData
 {
-  function __construct()
-  {
-    $this->config=<<<CODE
-        tooltip: {
-            trigger: 'item',
-            formatter: "{b} <br/>{c} ({d}%)"
-        },
-        legend: {
-            show:true,
-            orient: 'vertical',
-            x: 'right',
-            top:'50px',
-            data:['']
-        },
-        series: [
-            {
-                name:'',
-                type:'pie',
-                radius: ['40%', '70%'],
-                data:[
-                    {value:0, name:''}
-                ],
+  function init(){
+    $this->option->set("tooltip","
+    {
+        trigger: 'item',
+        formatter: '{b} <br/>{c} ({d}%)'
+    }
+    ");
+    $this->option->set("legend","
+    {
+        show:true,
+        orient: 'vertical',
+        x: 'right',
+        top:'50px',
+        data:['']
+    }
+    ");
+    $this->option->set("series","
+    [
+        {
+            name:'',
+            type:'pie',
+            radius: ['40%', '70%'],
+            data:[
+                {value:0, name:''}
+            ],
 
-            }
-        ],
-
-CODE;
+        }
+    ]
+    ");
+  
   }
   function add($d){
     if (isset($d[1])){

@@ -4,21 +4,30 @@
  */
 class EasyChart
 {
-  protected $type;
+  protected $typename;
   public $data=false;
   public $option=false;
   public $config;
 
 
-  function __construct($type="bar"){
+  function __construct($type=""){
     global $EC_config;
-    $this->set_type($type);
+
     $this->config=(empty($EC_config))?array():$EC_config;
     if (!empty($this->config['default'])){
       foreach ($this->config['default'] as $key => $value) {
         $this->option->set($key,$value);
       }
     }
+
+    if (empty($type)){
+      if (empty($this->config['type'])){
+        $type="none";
+      }else{
+        $type=$this->config['type'];
+      }
+    }
+    $this->type($type);
   }
   function title($title='',$subtitle='',$x="left"){
     $this->option->set("title","
@@ -65,10 +74,10 @@ class EasyChart
       }
      ");
   }
-  function set_type($type=''){
-    $this->type=ucfirst($type);
-    if (!empty($type)){
-      $classname='Chart_'.$this->type;
+  function type($type='none'){
+    $this->typename=ucfirst($type);
+    if (!empty($this->typename)){
+      $classname='Chart_'.$this->typename;
       $this->option=new ECOption();
       $this->data=new $classname($this->option);
 

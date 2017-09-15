@@ -21,7 +21,7 @@ class Chart_Bar extends ECData
     [
        {
            type : 'category',
-           data : ['a'],
+           data : [],
            axisTick: {
                alignWithLabel: true
            }
@@ -38,22 +38,17 @@ class Chart_Bar extends ECData
      ]
       ");
 
-    // $this->option->set("series","
-    // [
-    //     {
-    //         name:'值',
-    //         type:'bar',
-    //         barWidth: '60%',
-    //         data:[10]
-    //     }
-    // ]
-    //    ");
     $this->option->set("series","
-    [{
-                name: 'a',
-                type: 'bar',
-                data: [5]
-            }]");
+    [
+        {
+            name:'值',
+            type:'bar',
+            barWidth: '60%',
+            data:[]
+        }
+    ]
+       ");
+
 
   }
 }

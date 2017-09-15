@@ -19,9 +19,7 @@ class ECData
   function bind(&$option){
     $this->option=$option;
   }
-  function get_config($conf){
-    return $this->config . "\n" . $conf;
-  }
+
   function set_data($data){
     $this->data=$data;
   }
@@ -68,6 +66,11 @@ class ECData
   }
   function build(){
     $this->make_data();
+    if (!empty($this->data)){
+      foreach ($this->data as $key => $value) {
+        $this->option->set($key,$value);
+      }
+    }
 
   }
 }
