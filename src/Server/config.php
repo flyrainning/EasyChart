@@ -1,6 +1,6 @@
 <?php return array(
   'type'=>"bar",
-  'debug'=>true,
+  'debug'=>false,
   'default'=>array(
     'dataZoom'=>array(
       'show'=>true,
