@@ -139,7 +139,27 @@ class EasyChart
     return json_encode($data);
   }
   static function getAPI(){
-    return self::getVar("__api","");
+    return self::getVar("EC_api","");
+  }
+  static function server($dir="",$stop=false){
+    $_hash=self::getAPI();
+
+    if (empty($_hash)){
+      if ($stop){
+        self::error('没有指定API');
+      }else{
+        return;
+      }
+    }
+
+    $_file=strtr($_hash,array('.' => '/')).'.php';
+    $_file=rtrim($dir,'/').$_file;
+
+    if (file_exists($_file)) {
+    	require $_file;
+    }else{
+    	EasyChart::error('找不到API');
+    }
   }
   static function getVar($name,$default=""){
     return (isset($_REQUEST[$name]))?$_REQUEST[$name]:$default;

@@ -61,7 +61,7 @@ class EasyChart{
     if (typeof(PostData)!="object"){
   		PostData={data:PostData};
   	}
-    PostData.__api=api;
+    PostData.EC_api=api;
 
   	jQuery.ajax({
   		type: "POST",
