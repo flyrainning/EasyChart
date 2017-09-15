@@ -63,7 +63,7 @@ class EasyChart
     }
      ");
   }
-  function fullsize($left="60",$right="60",$top="60",$bottom="60"){
+  function size($left="60",$right="60",$top="60",$bottom="60"){
     $this->option->set("grid","
     {
         left: '$left',
@@ -158,7 +158,7 @@ class EasyChart
     if (file_exists($_file)) {
     	require $_file;
     }else{
-    	EasyChart::error('找不到API');
+    	EasyChart::error('找不到API'.$_file);
     }
   }
   static function getVar($name,$default=""){
