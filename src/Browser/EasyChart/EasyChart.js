@@ -37,8 +37,7 @@ class EasyChart{
     if (this.echarts) return;
     if (this.opt.id){
       this.DOM=jQuery("#"+this.opt.id);
-      if (this.opt.width) this.DOM.css({width:this.opt.width});
-      if (this.opt.height) this.DOM.css({height:this.opt.height});
+      this.size();
       this.echarts=echarts.init(document.getElementById(this.opt.id),this.opt.echarts_style);
     	this.echarts.showLoading({
     		text : this.opt.loading_text,
@@ -82,6 +81,12 @@ class EasyChart{
     }else{
       this.echarts.hideLoading();
     }
+  }
+  size(width,height){
+    if (width) this.opt.width=width;
+    if (height) this.opt.height=height;
+    if (this.opt.width) this.DOM.css({width:this.opt.width});
+    if (this.opt.height) this.DOM.css({height:this.opt.height});
   }
   resize(){
     this.echarts.resize();

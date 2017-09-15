@@ -63,7 +63,7 @@ class EasyChart
     }
      ");
   }
-  function size($left="60",$right="60",$top="60",$bottom="60"){
+  function padding($left="60",$right="60",$top="60",$bottom="60"){
     $this->option->set("grid","
     {
         left: '$left',
