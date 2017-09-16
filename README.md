@@ -24,15 +24,14 @@ we need jquery
 we need echarts , echarts-gl for 3D
 
 ```
-<script src="lib/echarts.min.js"></script>
-<script src="lib/echarts-gl.min.js"></script>
+<script src="echarts.min.js"></script>
+<script src="echarts-gl.min.js"></script>
 ```
 
 EasyChart
 
 ```
-<script src="config.js"></script>
-<script src="lib/EasyChart.js"></script>
+<script src="EasyChart.js"></script>
 ```
 
 

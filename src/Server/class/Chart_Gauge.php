@@ -34,7 +34,8 @@ class Chart_Gauge extends ECData
 
   }
   function make_data(){
-
+    if (empty($this->d[0])) return;
+    
     $this->data=array(
       'series'=>array(
         array(

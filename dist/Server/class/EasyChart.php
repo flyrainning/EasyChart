@@ -161,7 +161,7 @@ class EasyChart
     if (file_exists($_file)) {
     	require($_file);
     }else{
-    	EasyChart::error('找不到API'.$_file);
+    	EasyChart::error('找不到API');
     }
   }
   static function getVar($name,$default=""){

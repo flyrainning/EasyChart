@@ -109,6 +109,9 @@ class Chart_Gauge extends ECData
 
   //打包数据
   function make_data(){
+    //若缓存没有数据，不进行处理
+    if (empty($this->d[0])) return;
+
     //按照图表需要的格式填充data变量，具体格式参考echarts对应图表的配置信息
     $this->data=array(
       'series'=>array(

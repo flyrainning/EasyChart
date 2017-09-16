@@ -41,10 +41,12 @@ class EasyChart{
       this.DOM=jQuery("#"+this.opt.id);
       this.DOM.html("");
       this.size();
+
       this.echarts=echarts.init(document.getElementById(this.opt.id),this.opt.echarts_style);
     	this.echarts.showLoading({
     		text : this.opt.loading_text,
     	});
+
       if (typeof(this.opt.onload)=="function") this.opt.onload(this);
     }else{
       this.log("No id for DOM");
@@ -96,7 +98,7 @@ class EasyChart{
     this.resize();
   }
   resize(){
-    this.echarts.resize();
+    if (this.echarts) this.echarts.resize();
   }
   load(data,_opt){//加载数据
 
