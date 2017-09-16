@@ -29,13 +29,13 @@ gulp.task('js', function(){
 
 });
 gulp.task('css', function(){
-  return gulp.src([
-    'src/Browser/css/*.css',
-    'src/Browser/css/*.scss'
-  ])
-        .pipe($.concat('./Browser/css/EasyChart.css'))
-        .pipe($.sass())
-        .pipe(gulp.dest(dist));
+  // return gulp.src([
+  //   'src/Browser/css/*.css',
+  //   'src/Browser/css/*.scss'
+  // ])
+  //       .pipe($.concat('./Browser/css/EasyChart.css'))
+  //       .pipe($.sass())
+  //       .pipe(gulp.dest(dist));
 
 });
 gulp.task('echarts', function(){
@@ -54,7 +54,7 @@ gulp.task('image', function(){
 
 });
 gulp.task('build', function(cb){
-  runSequence('clean',['js','css','image','echarts','server'],cb);
+  runSequence('clean',['js','echarts','server'],cb);
 });
 gulp.task('default', ['build'],function(){
   // 将你的默认的任务代码放在这
