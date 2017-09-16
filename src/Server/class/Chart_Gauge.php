@@ -4,11 +4,7 @@ class Chart_Gauge extends ECData
 {
   public $max;
   function init(){
-    $this->option->set("dataZoom","
-    {
-        show: false
-    }
-    ");
+    $this->option->clean("dataZoom");
     $this->option->set("tooltip",'
     {
         formatter: "{a} <br/>{b} : {c}%"

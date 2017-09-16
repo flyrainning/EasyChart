@@ -12,6 +12,17 @@ class ECOption
       'option'=>$value,
     );
   }
+  function clean($name=""){
+    if ($name==""){
+      $this->option=array();
+    }else{
+      $tmp=array();
+      foreach ($this->option as $key => $value) {
+        if ($value['name']!=$name) $tmp[]=$value;
+      }
+      $this->option=$tmp;
+    }
+  }
   function parseJSFunction(){
 
     $code=<<<CODE

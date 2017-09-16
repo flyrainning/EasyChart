@@ -1,69 +1,56 @@
 <?php
 
-class ECData3D
+class ECData3D extends ECData
 {
-  public $option=false;
-  protected $data=array();
-  protected $d1=array();
-  protected $d2=array();
-  protected $d3=array();
-  protected $d4=array();
-  protected $d5=array();
-  protected $config='';
+  public $max_value=0;
+  function add($data){
 
-  function __construct(&$option){
-    $this->bind($option);
-    $this->init();
-  }
-  function init(){}
-  function bind(&$option){
-    $this->option=$option;
-  }
+    if (isset($data[2])){
+      $this->d[0][]=$data[0];
+      $this->d[1][]=$data[1];
+      $this->d[2][]=$data[2];
+      $this->d[3][]=(isset($data[3]))?$data[3]:'';
 
-  function set_data($data){
-    $this->data=$data;
-  }
-  function get_data($data){
-    return $this->data;
-  }
-  function add_data($data){
-    $this->data=array_merge($this->data,$data);
-  }
-  function add($d){
-
-    if (isset($d[1])){
-      $this->d1[]=$d[0];
-      $this->d2[]=array(
-        "value"=>$d[1],
-        'data'=>(isset($d[2]))?$d[2]:'',
-      );
 
     }
 
-
   }
   function make_data(){
+    if (empty($this->d[0])) return;
+    $tmp=array();
+    foreach ($this->d[0] as $key => $value) {
+      $tmp[]=array(
+        "value"=>array(
+          $this->d[0][$key],
+          $this->d[1][$key],
+          $this->d[2][$key],
+        ),
+        "data"=>$this->d[3],
+
+      );
+      $this->max_value=max($this->max_value,$this->d[2][$key]);
+
+    }
+
     $this->data=array(
-      'xAxis'=>array(
-          "data"=>$this->d1,
+      'visualMap'=>array(
+        'max'=>$this->max_value,
+      ),
+      'xAxis3D'=>array(
+          "data"=>$this->d[0],
+      ),
+      'yAxis3D'=>array(
+          "data"=>$this->d[1],
       ),
       'series'=>array(
         array(
-          "data"=>$this->d2,
-        )
+          "data"=>$tmp,
+        ),
+
       )
     );
   }
-  function clean($d){
-    $this->data=array();
-  }
-  function right2left(){
-    $this->d1=array_reverse($this->d1);
-    $this->d2=array_reverse($this->d2);
-    $this->d3=array_reverse($this->d3);
-    $this->d4=array_reverse($this->d4);
-    $this->d5=array_reverse($this->d5);
-  }
+
   function build(){
     $this->make_data();
 

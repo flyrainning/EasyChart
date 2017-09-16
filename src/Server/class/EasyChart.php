@@ -37,11 +37,7 @@ class EasyChart
     }
     $this->type($type);
 
-    if (!empty($this->config['default'])){
-      foreach ($this->config['default'] as $key => $value) {
-        $this->option->set($key,$value);
-      }
-    }
+
 
   }
   function title($title='',$subtitle='',$x="left"){
@@ -94,6 +90,11 @@ class EasyChart
     if (!empty($this->typename)){
       $classname='Chart_'.$this->typename;
       $this->option=new ECOption();
+      if (!empty($this->config['default'])){
+        foreach ($this->config['default'] as $key => $value) {
+          $this->option->set($key,$value);
+        }
+      }
       $this->data=new $classname($this->option);
     }
 
