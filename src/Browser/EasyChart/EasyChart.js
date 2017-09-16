@@ -6,6 +6,7 @@ class EasyChart{
     var user_opt={};
     if (typeof(EasyChart_config)=="object") user_opt=EasyChart_config;
     this.opt=Object.assign({
+      id:'',
       echarts_style:'macarons',
       loading_text:'loading ...',
       uri:"/api/",
@@ -38,6 +39,7 @@ class EasyChart{
     if (this.echarts) return;
     if (this.opt.id){
       this.DOM=jQuery("#"+this.opt.id);
+      this.DOM.html("");
       this.size();
       this.echarts=echarts.init(document.getElementById(this.opt.id),this.opt.echarts_style);
     	this.echarts.showLoading({
@@ -91,6 +93,7 @@ class EasyChart{
     if (height) this.opt.height=height;
     if (this.opt.width) this.DOM.css({width:this.opt.width});
     if (this.opt.height) this.DOM.css({height:this.opt.height});
+    this.resize();
   }
   resize(){
     this.echarts.resize();
