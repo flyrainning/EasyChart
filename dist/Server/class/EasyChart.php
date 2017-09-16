@@ -45,9 +45,7 @@ class EasyChart
     {
             text: '$title',
             subtext: '$subtitle',
-            x: '$x',
-            align: 'left'
-        }
+    }
      ");
   }
   function zoom($enable=true){
