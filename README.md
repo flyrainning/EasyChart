@@ -87,6 +87,10 @@ $chart->out();
 
 [EasyChart Doc](doc/README.md)
 
+## Example
+
+copy `example` and `dist` to your php server WWWROOT and run
+
 ## License
 
 EasyChart is available under the BSD license.
