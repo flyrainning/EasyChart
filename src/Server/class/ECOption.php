@@ -47,6 +47,7 @@ CODE;
       $n=$opt["name"];
       $o=$opt["option"];
       $code.=<<<CODE
+
   name="$n";
   obj=$o;
   add_option(name,obj);

@@ -34,6 +34,7 @@ class EasyChart{
   }
   init(_opt){
     this.setOpt(_opt);
+    this.log("init option:",_opt);
     if (this.echarts) return;
     if (this.opt.id){
       this.DOM=jQuery("#"+this.opt.id);
@@ -44,11 +45,12 @@ class EasyChart{
     	});
       if (typeof(this.opt.onload)=="function") this.opt.onload(this);
     }else{
-      if (this.opt.debug) console.log("No id found for EasyChart");
+      this.log("No id for DOM");
     }
 
   }
   send(data,callback){
+
     if (this.opt.use_websocket){
 
     }else{
@@ -61,6 +63,8 @@ class EasyChart{
   		PostData={data:PostData};
   	}
     PostData.EC_api=api;
+
+    that.log("Send Ajax:",PostData);
 
   	jQuery.ajax({
   		type: "POST",
@@ -103,19 +107,21 @@ class EasyChart{
   	var postdata=data || this.opt.post || "";
 
     this.send(postdata,function(msg){
+      that.log("Recive(raw):",msg);
       if (typeof(msg)=="string") msg=JSON.parse(msg);
+      that.log("Recive(obj):",msg);
       if (msg.result){
 
   			var opt={};
   			if (msg.data){
   				//config=eval("("+msg.data+")");
-          opt=(new Function("EasyChart",msg.data))(this);
+          opt=(new Function("EasyChart",msg.data))(that);
   			}
+        that.log("option by recive",opt);
 
   			if (that.opt.debug){
-  				console.log("option:",opt);
-          window.debug_opt=opt;
-          window.myChart=that.echarts;
+          window.EC_Debug_opt=opt;
+          window.EC_Debug_chart=that.echarts;
   			}
 
 
@@ -131,6 +137,9 @@ class EasyChart{
 
     });
 
+  }
+  log(name,msg){
+    if (this.opt.debug) console.log("EasyChart "+name,msg);
   }
 
 };

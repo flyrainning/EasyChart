@@ -3,6 +3,7 @@
 class Chart_Pie extends ECData
 {
   function init(){
+    $this->option->clean("dataZoom");
     $this->option->set("tooltip","
     {
         trigger: 'item',
@@ -31,29 +32,28 @@ class Chart_Pie extends ECData
         }
     ]
     ");
-  
+
   }
-  function add($d){
-    if (isset($d[1])){
-      $this->d1[]=$d[0];
-      $this->d2[]=array(
-        'name'=>$d[0],
-        'value'=>$d[1],
-        'data'=>(isset($d[2]))?$d[2]:'',
+  function add($data){
+    if (isset($data[1])){
+      $this->d[0][]=$data[0];
+      $this->d[1][]=array(
+        'name'=>$data[0],
+        'value'=>$data[1],
+        'data'=>(isset($data[2]))?$data[2]:'',
       );
 
-
     }
-
   }
   function make_data(){
+    if (empty($this->d[0])) return;
     $this->data=array(
       'legend'=>array(
-        "data"=>$this->d1,
+        "data"=>$this->d[0],
       ),
       'series'=>array(
         array(
-          "data"=>$this->d2,
+          "data"=>$this->d[1],
         )
       )
     );

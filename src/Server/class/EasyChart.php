@@ -106,7 +106,7 @@ class EasyChart
   function add_data($data){
     $this->data->add_data($data);
   }
-  function clean($d){
+  function clean(){
     $this->data->clean();
   }
   function right2left(){
