@@ -2,108 +2,169 @@
 /**
  *
  */
+ // function customError($errno, $errstr, $errfile, $errline){
+ //  echo "<b>Custom error:</b> [$errno] $errstr<br />";
+ //  echo " Error on line $errline in $errfile<br />";
+ //  echo "Ending Script";
+ //  die();
+ // }
+ // set_error_handler("customError");
+
 class EasyChart
 {
-  protected $config = array();
-  protected $type="";
-  protected $data_maker=false;
-  protected $addon_conf="";
+  protected $typename;
+  public $data=false;
+  public $option=false;
+  public $config;
 
-  public $switch=array(
-    'title'=>true,
 
-  );
+  function __construct($type=""){
+    global $EC_config;
 
-  function __construct($type="bar",$conf="")
-  {
-    $this->set_type($type);
-    $this->set_config($conf);
+    $this->config=(empty($EC_config))?array():$EC_config;
+
+    if (!empty($this->config['debug'])){
+      if ($this->config['debug']){
+        set_error_handler("EasyChart::customError");
+      }
+    }
+    if (empty($type)){
+      if (empty($this->config['type'])){
+        $type="none";
+      }else{
+        $type=$this->config['type'];
+      }
+    }
+    $this->type($type);
+
+
+
   }
   function title($title='',$subtitle='',$x="left"){
-    $this->addon_conf.=<<<CODE
-    title : {
+    $this->option->set("title","
+    {
             text: '$title',
             subtext: '$subtitle',
             x: '$x',
             align: 'left'
-        },
-CODE;
+        }
+     ");
   }
   function zoom($enable=true){
     $en=($enable)?"true":"false";
-    $this->addon_conf.=<<<CODE
-    dataZoom: {
+    $this->option->set("dataZoom","
+    {
         show: $en,
         start : 0
-    },
-
-CODE;
+    }
+     ");
   }
-  function fullsize($left="1%",$right="1%",$top="60",$bottom="60"){
-    $this->addon_conf.=<<<CODE
-    grid: {
+  function padding($left="60",$right="60",$top="60",$bottom="60"){
+    $this->option->set("grid","
+    {
         left: '$left',
         right: '$right',
         top: '$top',
         bottom: '$bottom',
         containLabel: true
-    },
-CODE;
-
+    }
+     ");
   }
   function toolbox($conf=""){
-    $this->addon_conf.=<<<CODE
-  toolbox: {
-        show : true,
-        feature : {
-            mark : {show: true},
-            dataView : {show: true, readOnly: false},
-          //  magicType : {show: true, type: ['line', 'bar']},
-            restore : {show: true},
-            saveAsImage : {show: true},
-            $conf
+    $this->option->set("toolbox","
+    {
+          show : true,
+          feature : {
+              mark : {show: true},
+              dataView : {show: true, readOnly: false},
+            //  magicType : {show: true, type: ['line', 'bar']},
+              restore : {show: true},
+              saveAsImage : {show: true},
+              $conf
+          }
+      }
+     ");
+  }
+  function type($type='none'){
+    $this->typename=ucfirst($type);
+    if (!empty($this->typename)){
+      $classname='Chart_'.$this->typename;
+      $this->option=new ECOption();
+      if (!empty($this->config['default'])){
+        foreach ($this->config['default'] as $key => $value) {
+          $this->option->set($key,$value);
         }
-    },
-CODE;
-  }
-  function set_type($type=''){
-    $this->type=$type;
-    $classname="chart_dataMaker";
-    if (!empty($type)){
-      $classname.='_'.$type;
+      }
+      $this->data=new $classname($this->option);
     }
-    $this->data_maker=new $classname;
-  }
-  function set_config($conf=''){
 
-    $this->config=$this->data_maker->get_config($conf);
   }
-  function data(){
+
+  function add(){
     $args = func_get_args();
-    $this->data_maker->add($args);
+    $this->data->add($args);
   }
   function add_data($data){
-    $this->data_maker->add_data($data);
+    $this->data->add_data($data);
   }
-  function clean($d){
-    $this->data_maker->clean();
+  function clean(){
+    $this->data->clean();
   }
   function right2left(){
-    $this->data_maker->right2left();
+    $this->data->right2left();
   }
   static function error($msg){
-    echo json_encode(array(
+    self::apiout(array(
       "result"=>false,
       "type"=>"error",
       "data"=>$msg
     ));
+
+  }
+  static function customError($errno, $errstr, $errfile, $errline){
+   echo "<b>Custom error:</b> [$errno] $errstr<br />";
+   echo " Error on line $errline in $errfile<br />";
+   echo "Ending Script";
+   die();
+  }
+  static function apiout($data){
+
+    header('Cache-Control: no-cache, must-revalidate');
+		header("Pragma: no-cache");
+    header('Content-type: application/json');
+
+    echo json_encode($data);
     die();
   }
-  static function getAPI($msg){
-    return self::getVar("__api","");
+  static function strout($data){
+    return json_encode($data);
+  }
+  static function getAPI($key="api"){
+    $api=self::getVar("EC_api","");
+    if (empty($api)) $api=self::getVar($key,"");
+    return $api;
+  }
+  static function server($dir="",$stop=false){
+    $_hash=self::getAPI();
+
+    if (empty($_hash)){
+      if ($stop){
+        self::error('没有指定API');
+      }else{
+        return;
+      }
+    }
+
+    $_file=strtr($_hash,array('.' => '/')).'.php';
+    $_file=rtrim($dir,'/').$_file;
+
+    if (file_exists($_file)) {
+    	require($_file);
+    }else{
+    	EasyChart::error('找不到API'.$_file);
+    }
   }
   static function getVar($name,$default=""){
-    print_r($_REQUEST[$name]);
     return (isset($_REQUEST[$name]))?$_REQUEST[$name]:$default;
   }
   static function getP($parmstr){
@@ -113,24 +174,22 @@ CODE;
 			global ${$k};
 			${$k}=self::getVar($k);
 		}
-
 	}
-  function out(){
-    //合并config
-    $configs='{';
-    $configs.=$this->config;
-    $configs.=$this->addon_conf;
-    $configs.='}';
-
-    //输出
-    //print_r($this->data_maker->out());
-    return array(
-    	'config'=>$configs,
-    	'data'=>$this->data_maker->out(),
+  function out($to_str=false){
+    $this->data->build();
+    $out=array(
+      'result'=>true,
+      'type'=>"option",
+      'data'=>$this->option->parseJSFunction(),
     );
 
-  }
+    if ($to_str){
+      return self::strout($out);
+    }else{
+      self::apiout($out);
+    }
 
+  }
 
 }
 

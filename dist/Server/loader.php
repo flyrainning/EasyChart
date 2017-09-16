@@ -1,5 +1,6 @@
 <?php
 define('ECROOT',dirname(__FILE__));
+define('EasyChart',true);
 
 //加载基本配置
 $EC_config=array();

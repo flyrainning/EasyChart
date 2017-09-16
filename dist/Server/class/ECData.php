@@ -2,21 +2,23 @@
 
 class ECData
 {
-  protected $data=array();
-  protected $d1=array();
-  protected $d2=array();
-  protected $d3=array();
-  protected $d4=array();
-  protected $d5=array();
-  protected $config='';
+  public $option=false;
+  protected $data;
+  protected $d;
+  protected $d_count=20;
 
-  function __construct()
-  {
-    $this->config='';
+
+  function __construct(&$option){
+    $this->clean();
+    $this->bind($option);
+    $this->init();
+
   }
-  function get_config($conf){
-    return $this->config . "\n" . $conf;
+  function init(){}
+  function bind(&$option){
+    $this->option=$option;
   }
+
   function set_data($data){
     $this->data=$data;
   }
@@ -26,44 +28,53 @@ class ECData
   function add_data($data){
     $this->data=array_merge($this->data,$data);
   }
-  function add($d){
-    if (isset($d[1])){
-      $this->d1[]=$d[0];
-      $this->d2[]=array(
-        "value"=>$d[1],
-        'data'=>(isset($d[2]))?$d[2]:'',
+  function add($data){
+
+    if (isset($data[1])){
+      $this->d[0][]=$data[0];
+      $this->d[1][]=array(
+        "value"=>$data[1],
+        'data'=>(isset($data[2]))?$data[2]:'',
       );
 
     }
 
+
   }
   function make_data(){
+    if (empty($this->d[0])) return;
     $this->data=array(
       'xAxis'=>array(
-        array(
-          "data"=>$this->d1,
-        )
+          "data"=>$this->d[0],
       ),
       'series'=>array(
         array(
-          "data"=>$this->d2,
+          "data"=>$this->d[1],
         )
       )
     );
   }
-  function clean($d){
+  function clean(){
     $this->data=array();
+    $this->d=array();
+    for ($i=0; $i <$this->d_count ; $i++) {
+      $this->d[$i]=array();
+    }
   }
   function right2left(){
-    $this->d1=array_reverse($this->d1);
-    $this->d2=array_reverse($this->d2);
-    $this->d3=array_reverse($this->d3);
-    $this->d4=array_reverse($this->d4);
-    $this->d5=array_reverse($this->d5);
+    for ($i=0; $i <$this->d_count ; $i++) {
+      $this->d[$i]=array_reverse($this->d[$i]);
+    }
   }
-  function out(){
+  function build(){
     $this->make_data();
-    return $this->data;
+
+    if (!empty($this->data)){
+      foreach ($this->data as $key => $value) {
+        $this->option->set($key,$value);
+      }
+    }
+
   }
 }
 

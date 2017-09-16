@@ -38,9 +38,49 @@ EasyChart
 
 ## Basic Usage
 
+Browser
+
+```
+<!-- jquery and echarts -->
+<script src="jquery.min.js"></script>
+<script src="echarts.min.js"></script>
+
+<script src="EasyChart.min.js"></script>
+
+
+<div EasyChart data-api="chart.sum"></div>
+
 ```
 
+Server
 
+/api/index.php
+
+```
+<?php
+require "EasyChart/dist/Server/loader.php";
+
+EasyChart::server();
+?>
+```
+
+/api/chart/sum.php  ( for api `chart.sum` )
+
+```
+<?php
+if (!defined('EasyChart')){
+	die('Access denied');
+}
+
+$chart=new EasyChart("bar");
+$chart->title("This is a chart");
+
+$chart->add("apple",365);
+$chart->add("banana",200);
+$chart->add("orange",180);
+
+$chart->out();
+?>
 
 ```
 

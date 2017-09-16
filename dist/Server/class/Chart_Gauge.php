@@ -3,35 +3,33 @@
 class Chart_Gauge extends ECData
 {
   public $max;
-  function __construct()
-  {
-    $this->config=<<<CODE
-    tooltip : {
-          formatter: "{a} <br/>{b} : {c}%"
-      },
+  function init(){
+    $this->option->clean("dataZoom");
+    $this->option->set("tooltip",'
+    {
+        formatter: "{a} <br/>{b} : {c}%"
+    }
+    ');
+    $this->option->set("series","
+    [
+        {
+            name: '百分比',
+            type: 'gauge',
+            detail: {formatter:'{value}%'},
+            data: [0]
+        }
+    ]
+    ");
 
-
-      series: [
-          {
-              name: '百分比',
-              type: 'gauge',
-              detail: {formatter:'{value}%'},
-              data: [0]
-          }
-      ],
-
-CODE;
   }
-  function add($d){
-    if (isset($d[1])){
-      $this->d1[]=array(
-        'name'=>$d[0],
-        'value'=>$d[1],
-        'data'=>(isset($d[2]))?$d[2]:'',
+  function add($data){
+    if (isset($data[1])){
+      $this->d[0][]=array(
+        'name'=>$data[0],
+        'value'=>$data[1],
+        'data'=>(isset($data[2]))?$data[2]:'',
       );
-      $this->max=($d[1]<=100)?"100":ceil($d[1]/10)*10;
-
-
+      $this->max=($data[1]<=100)?"100":ceil($data[1]/10)*10;
     }
 
   }
@@ -41,7 +39,7 @@ CODE;
       'series'=>array(
         array(
           "max"=>$this->max,
-          "data"=>$this->d1,
+          "data"=>$this->d[0],
         )
       )
     );
