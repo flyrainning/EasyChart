@@ -10,7 +10,7 @@
 array(
   'type'=>"bar", // 默认的图表类型
   'debug'=>false, // 是否开启调试
-  'default'=>array(),// echarts的默认参数
+  'default'=>array(),// echarts的参数，将被应用于所有echarts作为默认设置
 );
 
 ```

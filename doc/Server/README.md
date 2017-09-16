@@ -22,17 +22,12 @@ require 'EasyChart/dist/Server/loader.php';
 
 ## 可用图表
 
-### Bar
-
-### Line
-
-### Pie
-
-### Gauge
-
-### Bar3D
-
-### Line3D
+- Bar
+- Line
+- Pie
+- Gauge
+- Bar3D
+- Line3D
 
 ## 新的图表类型
 

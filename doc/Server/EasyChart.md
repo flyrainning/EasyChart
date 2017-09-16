@@ -44,16 +44,17 @@ $chart->option->set("title",array(
 $chart->option->set("title","
 {
         text: 'I am title2',
-        align: 'right'
+        right: '10'
 }
  ");
-//这时，标题为I am title2，右对齐
+//这时，标题为I am title2，右对齐10px
 
 //设置对齐，因为是合并方式，所以之前设置的标题会保留
 $chart->option->set("title",array(
-  'align'=>'left'
+  'right'=>'auto',
+  'left'=>'10'
   ));
-//这时，标题为I am title2，左对齐
+//这时，标题为I am title2，左对齐10px
 
 //清空标题设置
 $chart->option->clean("title");

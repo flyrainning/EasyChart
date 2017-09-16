@@ -17,6 +17,8 @@ class ECData3D extends ECData
   }
   function make_data(){
     if (empty($this->d[0])) return;
+
+    //处理数据
     $tmp=array();
     foreach ($this->d[0] as $key => $value) {
       $tmp[]=array(
@@ -32,15 +34,20 @@ class ECData3D extends ECData
 
     }
 
+    //去掉重复的x,y
+    $x = array_values(array_flip(array_flip($this->d[0])));
+    $y = array_values(array_flip(array_flip($this->d[1])));
+
+    //打包数据
     $this->data=array(
       'visualMap'=>array(
         'max'=>$this->max_value,
       ),
       'xAxis3D'=>array(
-          "data"=>$this->d[0],
+          "data"=>$x,
       ),
       'yAxis3D'=>array(
-          "data"=>$this->d[1],
+          "data"=>$y,
       ),
       'series'=>array(
         array(
