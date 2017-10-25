@@ -18,6 +18,12 @@ jQuery(function($){
     var api=$(this).data("api");
     if (api) opt.api=api;
 
+		var height=$(this).data("height");
+    if (height) opt.height=api;
+
+		var width=$(this).data("width");
+    if (width) opt.width=api;
+
     var debug=$(this).data("debug");
     if (debug){
       opt.debug=true;
