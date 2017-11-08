@@ -1,6 +1,14 @@
 # EasyChart
 Easy way to use echarts with php
 
+# 迁移通知
+
+因中国国内部分地区访问github存在网络问题，我们不得不将该项目迁移到国内进行维护
+
+本仓库停止更新
+
+最新版本：[https://gitee.com/flyrainning/EasyChart](https://gitee.com/flyrainning/EasyChart)
+
 
 ## Dependencies
 
